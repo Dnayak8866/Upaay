@@ -1,0 +1,155 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+#Ignore IDE/Editor files
+.vscode/
+.idea/
+
+#Ignore .NET temporary files
+bin/
+obj/
+
+#Ignore VS files
+.vs
+
+
+
+# Ignore Node.js dependencies for React and React Native
+
+node_modules/
+
+npm-debug.log*
+
+yarn-debug.log*
+
+yarn-error.log*
+
+
+
+# Ignore build output for React
+
+build/
+
+dist/
+
+.eslintcache
+
+
+
+# Ignore .env files
+
+.env
+
+.env.local
+
+.env.*.local
+
+
+
+# Ignore React Native platform-specific files
+
+android/.gradle/
+
+android/app/build/
+
+android/.idea/
+
+android/local.properties
+
+android/.DS_Store
+
+android/*.iml
+
+ios/Pods/
+
+ios/build/
+
+ios/*.xccheckout
+
+ios/*.xcuserstate
+
+ios/.DS_Store
+
+ios/*.xcworkspace
+
+
+# Ignore Visual Studio specific files
+
+*.idea/
+
+*.vs/
+
+*.userprefs
+
+_ReSharper.Caches/
+# Ignore logs
+
+*.log
+
+
+
+# Ignore temporary files created during React Native development
+
+*.tmp
+
+*.swp
+
+
+.vscode/
+
+*.code-workspace
+
+
+
+# Ignore macOS system files
+
+**/.DS_Store
+
+**/.AppleDouble
+
+**/.LSOverride
+
+
+
+# Ignore Windows system files
+
+Thumbs.db
+
+ehthumbs.db
+
+Desktop.ini
+app-example
