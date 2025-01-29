@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UpaayBackendService.DAL.Enums;
+using UpaayBackendService.Shared.Enums;
 
-namespace UpaayBackendService.DAL.Models
+namespace UpaayBackendService.Shared.Model
 {
-    public class ClientDetails
+    public class ClientPersonalDetailDTO
     {
-        [Key]
         public int ClientId { get; set; }
 
         [Required]
@@ -33,7 +32,7 @@ namespace UpaayBackendService.DAL.Models
         public string AadharCardNo { get; set; }
 
         [Required]
-        public DateOnly DateOfBirth { get;set; }
+        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Gender -> Male Female, Transgender
@@ -53,7 +52,7 @@ namespace UpaayBackendService.DAL.Models
         /// <summary>
         /// Relation Type -> Father, Spouse
         /// </summary>
-     
+
         [Required]
         [EnumDataType(typeof(RelationType), ErrorMessage = "Invalid relation type")]
         public RelationType RelationType { get; set; }
@@ -70,8 +69,6 @@ namespace UpaayBackendService.DAL.Models
 
         [Required]
         public bool IsPanVerified { get; set; }
-
-        //check salary property may be enum 
 
         [Required]
         [EnumDataType(typeof(AnnualIncome), ErrorMessage = "Invalid annual income")]
