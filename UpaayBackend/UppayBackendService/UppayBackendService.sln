@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpaayBackendService.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpaayBackendService.Shared", "UpaayBackendService.Shared.Models\UpaayBackendService.Shared.csproj", "{559DF28F-C41C-4BD2-920B-DD28CB135854}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpaayBackendService.Host", "UpaayBackendService.Host\UpaayBackendService.Host.csproj", "{F47DF246-3C20-4A52-AB25-87B04CAD5993}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{559DF28F-C41C-4BD2-920B-DD28CB135854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{559DF28F-C41C-4BD2-920B-DD28CB135854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{559DF28F-C41C-4BD2-920B-DD28CB135854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F47DF246-3C20-4A52-AB25-87B04CAD5993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F47DF246-3C20-4A52-AB25-87B04CAD5993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F47DF246-3C20-4A52-AB25-87B04CAD5993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F47DF246-3C20-4A52-AB25-87B04CAD5993}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
