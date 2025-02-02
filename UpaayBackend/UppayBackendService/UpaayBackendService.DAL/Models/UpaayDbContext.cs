@@ -22,8 +22,10 @@ namespace UpaayBackendService.DAL.Models
         //}
 
         public virtual DbSet<ClientPersonalDetails> ClientDetails { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserOtpVerification> UserOtpVerifications { get; set; }
 
-       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ClientPersonalDetails>(entity =>
@@ -43,7 +45,40 @@ namespace UpaayBackendService.DAL.Models
                 entity.Property(e => e.Signature).IsRequired();
             });
 
-           
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.Password)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.UserId).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<UserOtpVerification>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK__UserOtpV__3214EC07D02E91C8");
+
+                entity.ToTable("UserOtpVerification");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+               
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserOtpVerification)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserOtpVe__UserI__48CFD27E");
+            });
+
+
+
         }
 
        
