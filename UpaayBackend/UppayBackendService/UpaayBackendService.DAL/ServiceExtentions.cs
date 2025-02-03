@@ -12,6 +12,7 @@ namespace UpaayBackendService.DAL
         public static void AddDataAccessServices(IServiceCollection services,IConfiguration configuraion)
         {
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             //Initialize DB context here
             services.AddDbContext<UpaayDbContext>(options =>
             options.UseSqlServer(configuraion.GetConnectionString("DefaultConnection")));
