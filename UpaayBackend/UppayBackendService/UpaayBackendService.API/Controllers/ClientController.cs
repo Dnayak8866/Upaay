@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UpaayBackendService.API.Models.Request;
+using UpaayBackendService.Application;
 
 namespace UpaayBackendService.API.Controllers
 {
@@ -17,8 +18,8 @@ namespace UpaayBackendService.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClient(CreateClientRequest clientDetailRequest)
         {
-            var handler = _serviceProvider.GetRequiredService<IHandler<CreateClientRequest, bool>>();
-            var product = await handler.HandleAsync(clientDetailRequest);
+            var createClientHandler = _serviceProvider.GetRequiredService<IHandler<CreateClientRequest, bool>>();
+            var product = await createClientHandler.HandleAsync(clientDetailRequest);
             return Ok(product);
         }
     }

@@ -10,18 +10,6 @@ builder.Services.AddControllers();
 //builder.Services.AddDbContext<UpaayDbContext>(options =>
 //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var assembly = typeof(Program).Assembly; // Get the current assembly
-
-var handlerTypes = assembly.GetTypes()
-    .Where(t => !t.IsAbstract && !t.IsInterface) // Exclude interfaces and abstract classes
-    .SelectMany(t => t.GetInterfaces()
-        .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandler<,>))
-        .Select(i => new { Interface = i, Implementation = t }));
-
-foreach (var handler in handlerTypes)
-{
-    builder.Services.AddScoped(handler.Interface, handler.Implementation);
-}
 
 //Register Services with dependency injection
 //This will call the centralized host project for initializing services....

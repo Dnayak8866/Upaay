@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UpaayBackendService.Application;
 using UpaayBackendService.Application.Requests;
 using UpaayBackendService.Application.Response;
 
@@ -15,10 +16,10 @@ namespace UpaayBackendService.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> RegisterClient(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var handler = _serviceProvider.GetRequiredService<IHandler<LoginRequest, LoginResponse>>();
-            var response = await handler.HandleAsync(request);
+            var loginHandler = _serviceProvider.GetRequiredService<IHandler<LoginRequest, LoginResponse>>();
+            var response = await loginHandler.HandleAsync(request);
             return Ok(response);
         }
     }

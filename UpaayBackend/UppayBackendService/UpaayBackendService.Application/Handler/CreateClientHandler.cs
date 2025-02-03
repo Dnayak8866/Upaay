@@ -1,12 +1,13 @@
 ﻿using UpaayBackendService.API.Models.Request;
+using UpaayBackendService.Application;
 using UpaayBackendService.Application.IServices;
 
 namespace UpaayBackendService.API.Handler
 {
-    public class ClientHandler : IHandler<CreateClientRequest, bool>
+    public class CreateClientHandler : IHandler<CreateClientRequest, bool>
     {
         private readonly IClientService _clientService;
-        public ClientHandler(IClientService clientService)
+        public CreateClientHandler(IClientService clientService)
         {
             _clientService = clientService;
         }
