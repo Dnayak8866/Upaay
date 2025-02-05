@@ -7,9 +7,9 @@ namespace UpaayBackendService.Host
 {
     public static class DepedencyInjection
     {
-        public static void AddApplicationServicesDependency(this IServiceCollection services)
+        public static void AddApplicationServicesDependency(this IServiceCollection services,IConfiguration configuration)
         {
-            ApplicationExtensions.AddApplicationServices(services);
+            ApplicationExtensions.AddApplicationServices(services,configuration);
      
         }
 

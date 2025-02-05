@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UpaayBackendService.API.Models.Request;
 using UpaayBackendService.Application;
 
@@ -15,6 +16,7 @@ namespace UpaayBackendService.API.Controllers
             _serviceProvider = serviceProvider;
         }
 
+        [Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClient(CreateClientRequest clientDetailRequest)
         {

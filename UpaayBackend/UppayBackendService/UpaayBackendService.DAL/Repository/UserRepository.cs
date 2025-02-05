@@ -14,7 +14,7 @@ namespace UpaayBackendService.DAL.Repository
 
         public async Task<User> GetUserAsync(string email)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email.ToLower() ==  email.ToLower());
         }
 
         public async Task<bool> CreateOTP(int otp, int userId)
