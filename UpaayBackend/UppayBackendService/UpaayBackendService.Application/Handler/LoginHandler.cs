@@ -11,10 +11,11 @@ namespace UpaayBackendService.Application.Handler
         private readonly IRefreshTokenService _tokenService;
         private readonly IJwtTokenService _jwtTokenService;
 
-        public LoginHandler(IAuthService authService,IRefreshTokenService tokenService)
+        public LoginHandler(IAuthService authService, IRefreshTokenService tokenService, IJwtTokenService jwtTokenService)
         {
             _authService = authService;
             _tokenService = tokenService;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<LoginResponse> HandleAsync(LoginRequest request)

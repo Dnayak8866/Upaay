@@ -81,8 +81,9 @@ namespace UpaayBackendService.DAL.Models
                     .IsUnicode(false);
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.User).WithMany(p => p.UserOtpVerifications)
-                    .HasForeignKey(d => d.UserId)
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserOtpVerifications)
+                    .HasForeignKey<UserOtpVerification>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserOtpVe__UserI__48CFD27E");
             });

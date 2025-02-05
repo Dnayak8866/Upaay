@@ -16,9 +16,9 @@ namespace UpaayBackendService.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(RefreshTokenRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var loginHandler = _serviceProvider.GetRequiredService<IHandler<RefreshTokenRequest, LoginResponse>>();
+            var loginHandler = _serviceProvider.GetRequiredService<IHandler<LoginRequest, LoginResponse>>();
             var response = await loginHandler.HandleAsync(request);
             if (response !=null && !response.Success)
             {

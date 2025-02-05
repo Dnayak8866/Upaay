@@ -39,26 +39,6 @@ namespace UpaayBackendService.Application
             {
                 services.AddScoped(handler.Interface, handler.Implementation);
             }
-
-            //Register Jw Authentication......
-            //var key = configuration?.GetSection("JwtSettings")["SecretKey"];
-      
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = false, //make it true if needs to validate issuer domain
-            //            ValidateAudience = false, //make it true if needs to validate audience domain
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer =  "yourdomain.com",
-            //            ValidAudience = "yourdomain.com",
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-            //        };
-            //    });
-
-            //services.AddAuthorization();
         }
     }
 }
