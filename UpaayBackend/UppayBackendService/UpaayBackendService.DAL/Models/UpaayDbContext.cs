@@ -47,7 +47,7 @@ namespace UpaayBackendService.DAL.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C7B088C0A");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(100)
@@ -59,7 +59,10 @@ namespace UpaayBackendService.DAL.Models
                 entity.Property(e => e.Password)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-                entity.Property(e => e.UserId).ValueGeneratedOnAdd();
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<UserOtpVerification>(entity =>
@@ -68,11 +71,18 @@ namespace UpaayBackendService.DAL.Models
 
                 entity.ToTable("UserOtpVerification");
 
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
                 entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
-               
-                entity.HasOne(d => d.User)
-                    .WithOne(p => p.UserOtpVerification)
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User).WithMany(p => p.UserOtpVerifications)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserOtpVe__UserI__48CFD27E");
             });

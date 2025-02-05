@@ -1,4 +1,7 @@
-using UpaayBackendService.API;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using UpaayBackendService.Application.DTOs;
 using UpaayBackendService.Host;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,10 +16,34 @@ builder.Services.AddControllers();
 
 //Register Services with dependency injection
 //This will call the centralized host project for initializing services....
-builder.Services.AddApplicationServicesDependency();
+builder.Services.AddApplicationServicesDependency(builder.Configuration);
 builder.Services.AddDataContextServicesDependency(builder.Configuration);
 
-//builder.Services.AddScoped<IClientRepository, ClientRepository>();
+// Bind AppSettings to the corresponding section in appsettings.json
+//registering dependency injection of appsetting.json file
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+//JWT Authentication registration......
+var key = builder.Configuration?.GetSection("JwtSettings")["SecretKey"];
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = false, //make it true if needs to validate issuer domain
+                       ValidateAudience = false, //make it true if needs to validate audience domain
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = "yourdomain.com",
+                       ValidAudience = "yourdomain.com",
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                   };
+               });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,7 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

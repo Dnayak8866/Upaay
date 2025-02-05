@@ -20,6 +20,7 @@ namespace UpaayBackendService.Shared
         public const string OtpExpired = "OTP has expired. Please request a new one.";
         public const string UserNotFound = "User not found.";
         public const string UnauthorizedAccess = "Unauthorized access.";
+        public const string InvalidRefreshToken = "Invalid RefreshToken.";
 
         // ⚠️ Validation Messages
         public const string RequiredField = "This field is required.";
