@@ -20,7 +20,11 @@ namespace UpaayBackendService.DAL.Models
 
         public DateTime CreatedDate { get; set; }
 
-        public virtual UserOtpVerification UserOtpVerification { get; set; }
+        public string UpdatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        public virtual UserOtpVerification UserOtpVerifications { get; set; }
     }
 
 }

@@ -20,6 +20,24 @@ namespace UpaayBackendService.API.Controllers
         {
             var loginHandler = _serviceProvider.GetRequiredService<IHandler<LoginRequest, LoginResponse>>();
             var response = await loginHandler.HandleAsync(request);
+            if (response !=null && !response.Success)
+            {
+                Unauthorized(response.Message);
+            }
+        
+            return Ok(response);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> GetNewAccesTokenByReferenceToken(RefreshTokenRequest request)
+        {
+            var createAccessTokenHandler = _serviceProvider.GetRequiredService<IHandler<RefreshTokenRequest, LoginResponse>>();
+            var response = await createAccessTokenHandler.HandleAsync(request);
+            if (response != null && !response.Success)
+            {
+                Unauthorized(response.Message);
+            }
+            
             return Ok(response);
         }
     }

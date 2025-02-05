@@ -1,7 +1,5 @@
-﻿using System.Security.Cryptography;
-using UpaayBackendService.Application.IServices;
+﻿using UpaayBackendService.Application.IServices;
 using UpaayBackendService.Application.Requests;
-using UpaayBackendService.Application.Response;
 using UpaayBackendService.DAL.IRepository;
 
 namespace UpaayBackendService.Application.Services
@@ -18,13 +16,11 @@ namespace UpaayBackendService.Application.Services
         public async Task<bool> LoginAsync(LoginRequest loginRequest)
         {
             var user = await _userRepository.GetUserAsync(loginRequest.Email);
+            
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
             {
                 return false;
             }
-
-            //var token = string.Empty;//GenerateJwtToken()
-
             return true;
 
         }

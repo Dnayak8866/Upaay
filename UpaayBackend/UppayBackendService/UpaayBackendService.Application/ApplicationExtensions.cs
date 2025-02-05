@@ -1,20 +1,32 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using UpaayBackendService.Application.Automapper;
 using UpaayBackendService.Application.IServices;
 using UpaayBackendService.Application.Services;
 using UpaayBackendService.DAL;
 using UpaayBackendService.DAL.IRepository;
 using UpaayBackendService.DAL.Repository;
+using Microsoft.Extensions.Configuration;
 
 namespace UpaayBackendService.Application
 {
     public static class ApplicationExtensions
     {
-        public static void AddApplicationServices(IServiceCollection services)
+        public static void AddApplicationServices(IServiceCollection services,IConfiguration configuration)
         {
+
+            //Register services.........
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IOtpService, OtpService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+
             services.AddAutoMapper(typeof(MappingProfile));
 
+            //Register Handler.........
             var assembly = typeof(ApplicationExtensions).Assembly; // Get the current assembly
 
             var handlerTypes = assembly.GetTypes()
