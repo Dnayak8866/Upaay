@@ -1,4 +1,6 @@
 ﻿using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using UpaayBackendService.Application.DTOs;
 using UpaayBackendService.Application.IServices;
 using UpaayBackendService.Application.Response;
@@ -11,8 +13,10 @@ namespace UpaayBackendService.Application.Services
     {
         private readonly IOtpRepository _otpRepository;
         private readonly IUserRepository _userRepository;
-        public OtpService(IOtpRepository otpRepository) {
+        private readonly OtpConfigurations _otpConfiguration;
+        public OtpService(IOtpRepository otpRepository, IOptions<OtpConfigurations> otpConfig ) {
             _otpRepository = otpRepository;
+            _otpConfiguration = otpConfig.Value;
         }
         public async Task<bool> CreateOtp(string emailId)
         {
@@ -24,7 +28,6 @@ namespace UpaayBackendService.Application.Services
             }
             var otp = GenerateOtp(4);
             await _userRepository.CreateOTP(otp, user.UserId);
-
             return true;
 
         }
@@ -37,13 +40,19 @@ namespace UpaayBackendService.Application.Services
             {
                 return new VerifyOtpResult() { Message = ResponseMessages.UserNotFound, Success = false };
             }
-            var verifyResponse = await _otpRepository.VerifyOTP(otp, user.UserId);
-            if (!verifyResponse)
+            var userOtpDetails = await _otpRepository.GetOtpByUserId(user.UserId);
+            
+            if (userOtpDetails == null || userOtpDetails.ExpiryDate <= DateTime.Now || userOtpDetails.NoOfAttempts >= _otpConfiguration.MaxAttempts)
             {
-
-                return new VerifyOtpResult() { Message = ResponseMessages.InvalidOtp, Success = false }; ;
+                return new VerifyOtpResult() { Message = ResponseMessages.OtpExpired, Success = false };
             }
-
+           
+            if (userOtpDetails != null && userOtpDetails.Otp != otp)
+            {
+                userOtpDetails.NoOfAttempts++;
+                await _otpRepository.UpdateOtpDetails(userOtpDetails);
+                return new VerifyOtpResult() { Message = ResponseMessages.InvalidOtp, Success = false };
+            }
             return new VerifyOtpResult() { Message = ResponseMessages.OtpVerified, Success = true }; ; ;
 
         }
@@ -67,7 +76,6 @@ namespace UpaayBackendService.Application.Services
                 RandomNumberGenerator.Fill(bytes);
                 otp = BitConverter.ToUInt16(bytes, 0) % 10000; // Ensures a 4-digit OTP
             } while (otp < otpDigit); // Ensure it's a valid 4-digit number
-
             return otp;
         }
     }

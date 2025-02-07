@@ -21,7 +21,8 @@ builder.Services.AddDataContextServicesDependency(builder.Configuration);
 
 // Bind AppSettings to the corresponding section in appsettings.json
 //registering dependency injection of appsetting.json file
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<JwtConfigurations>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<OtpConfigurations>(builder.Configuration.GetSection("OtpSettings"));
 
 //JWT Authentication registration......
 var key = builder.Configuration?.GetSection("JwtSettings")["SecretKey"];
