@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UpaayBackendService.Application.DTOs
 {
-    public class AppSettings
+    public class JwtConfigurations
     {
         public string SecretKey { get; set; }
         public string Issuer { get; set; }

@@ -42,19 +42,39 @@ namespace UpaayBackendService.DAL.Repository
             return true;
         }
 
+        public async Task<UserOtpVerification> GetOtpByUserId(int userID)
+        {
+            var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userID);
+            return userOtpDetails;
+        }
+
+        public async Task<bool> UpdateOtpDetails(UserOtpVerification userOtpVerification)
+        {
+            var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userOtpVerification.UserId);
+            userOtpDetails = userOtpVerification;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> VerifyOTP(int otp, int userId)
         {
             var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userId);
+          
             if (userOtpDetails == null || userOtpDetails.Otp != otp)
             {
                 userOtpDetails.NoOfAttempts++;
-                await _dbContext.UserOtpVerifications.AddAsync(userOtpDetails);
                 await _dbContext.SaveChangesAsync();
 
+                return false;
+            }
+            if (DateTime.Now >= userOtpDetails.ExpiryDate )
+            {
                 return false;
             }
 
             return true;
         }
+
+        
     }
 }

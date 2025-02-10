@@ -10,8 +10,8 @@ namespace UpaayBackendService.Application.Services
 {
     public class JwtTokenService : IJwtTokenService
     {
-        private readonly AppSettings _appSettings;
-        public JwtTokenService(IOptions<AppSettings> appSettings) {
+        private readonly JwtConfigurations _appSettings;
+        public JwtTokenService(IOptions<JwtConfigurations> appSettings) {
 
             _appSettings = appSettings.Value;
         }
