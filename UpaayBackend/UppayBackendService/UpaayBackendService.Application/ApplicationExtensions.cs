@@ -9,6 +9,7 @@ using UpaayBackendService.DAL;
 using UpaayBackendService.DAL.IRepository;
 using UpaayBackendService.DAL.Repository;
 using Microsoft.Extensions.Configuration;
+using UpaayBackendService.MessagingService.MessagingService;
 
 namespace UpaayBackendService.Application
 {
@@ -23,6 +24,11 @@ namespace UpaayBackendService.Application
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddSingleton<IMessagingService, EmailService>(emailService => new EmailService(
+                configuration.GetSection("EmailConfigurations").GetValue<string>("server"),
+                configuration.GetSection("EmailConfigurations").GetValue<int>("port"),
+                configuration.GetSection("EmailConfigurations").GetValue<string>("emailId"),
+                configuration.GetSection("EmailConfigurations").GetValue<string>("password")));
 
             services.AddAutoMapper(typeof(MappingProfile));
 
