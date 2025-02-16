@@ -1,9 +1,7 @@
 ﻿using System.Security.Cryptography;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using UpaayBackendService.Application.DTOs;
 using UpaayBackendService.Application.IServices;
-using UpaayBackendService.Application.Response;
 using UpaayBackendService.DAL.IRepository;
 using UpaayBackendService.Shared;
 
@@ -14,21 +12,21 @@ namespace UpaayBackendService.Application.Services
         private readonly IOtpRepository _otpRepository;
         private readonly IUserRepository _userRepository;
         private readonly OtpConfigurations _otpConfiguration;
-        public OtpService(IOtpRepository otpRepository, IOptions<OtpConfigurations> otpConfig ) {
+        public OtpService(IOtpRepository otpRepository, IUserRepository userRepository, IOptions<OtpConfigurations> otpConfig ) {
             _otpRepository = otpRepository;
             _otpConfiguration = otpConfig.Value;
+            _userRepository = userRepository;
         }
-        public async Task<bool> CreateOtp(string emailId)
+        public async Task<int?> CreateOtp(string emailId)
         {
             var user = await _userRepository.GetUserAsync(emailId);
             if (user == null)
             {
-
-                return false; 
+                return null; 
             }
             var otp = GenerateOtp(4);
             await _userRepository.CreateOTP(otp, user.UserId);
-            return true;
+            return otp;
 
         }
 

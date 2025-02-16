@@ -155,3 +155,6 @@ Desktop.ini
 app-example
 
 .gitignore
+
+# Ignore appsettings for development
+appsettings.Development.json

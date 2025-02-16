@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Logo\UpaayMutualFund.jpg" />
+    <None Remove="Logo\UpaayMutualFund.png" />
+    <None Remove="Logo\UpaayMutualFund.svg" />
+    <None Remove="Logo\UpaayMutualFundLogo.svg" />
+    <None Remove="Templates\SendOtp.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Logo\UpaayMutualFund.svg" />
+    <EmbeddedResource Include="Logo\UpaayMutualFund.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SendOtp.html" />
+  </ItemGroup>
+
+</Project>
