@@ -1,90 +1,171 @@
 import { Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { login } from '@/service/api/authService';
-import LoginScreen from '@/screens/LoginScreen';
-import SplashScreenPage from '@/screens/SplashScreen';
-import { AxiosError } from 'axios';
-import ForgotPasswordScreen from '@/screens/ForgotPasswordScreen';
-import EmailVerificationScreen from '@/screens/EmailVerificationScreen';
-import ResetPasswordScreen from '@/screens/ResetPasswordScreen';
-import ConfirmationScreen from '@/screens/ConfirmationScreen';
+import { router } from 'expo-router'
+import { login, sendOTP, verifyOTP, resetPassword } from '@/service/api/authService'
+import { z } from 'zod'
+import LoginScreen from '@/screens/LoginScreen'
+import SplashScreenPage from '@/screens/SplashScreen'
+import ForgotPasswordScreen from '@/screens/ForgotPasswordScreen'
+import EmailVerificationScreen from '@/screens/EmailVerificationScreen'
+import ResetPasswordScreen from '@/screens/ResetPasswordScreen'
+import ConfirmationScreen from '@/screens/ConfirmationScreen'
 
+type Screen = 'splash' | 'login' | 'forgot' | 'verify' | 'reset' | 'confirm'
 const AuthLayout = () => {
-  const [currentScreen, setCurrentScreen] = useState<'login' | 'forgot' | 'verify' | 'reset' | 'splash'| 'confirm'>('splash');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [newPasswordError, setNewPasswordError] = useState('');
-  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [currentScreen, setCurrentScreen] = useState<Screen>('splash')
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    forgotPasswordEmail: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [visiblePasswords, setVisiblePasswords] = useState({
+    password: false,
+    confirmPassword: false
+  })
+  const [isRememberMe, setIsRememberMe] = useState(false)
 
-  const togglePasswordVisibility = (field: string) => {
-    if (field === 'password') {
-      setPasswordVisible(!isPasswordVisible);
-    } else if (field === 'confirmPassword') {
-      setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
-    }
-  };
+  const emailSchema = z.string().min(1, 'Email is required').email('Please enter a valid email address')
+  const passwordSchema = z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters')
+
+  const validateField = (schema: z.ZodType<any>, value: string): string => {
+    const result = schema.safeParse(value)
+    return result.success ? '' : result.error.errors[0].message
+  }
+
+  const handleFieldChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+    setErrors(prev => ({ ...prev, [field]: '' }))
+  }
+
+  const togglePasswordVisibility = (field: 'password' | 'confirmPassword') => {
+    setVisiblePasswords(prev => ({ ...prev, [field]: !prev[field] }))
+  }
 
   const handleLogin = async () => {
-    setEmailError('');
-    setPasswordError('');
-    if (!email) {
-      setEmailError('Email is required');
-      return;
-    }
-
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailRegex.test(email)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-    if (!password) {
-      setPasswordError('Password is required');
-      return;
-    }
-
-    if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters.");
-      return;
-    }
     try {
-      const loginObj = { email, password };
-      // const data = await login(loginObj);
-      // Alert.alert('Login Successful', data.message);
-      if (email === 'hello@example.com' && password === 'password123') {
-        Alert.alert("Login Successful");
+      const emailError = validateField(emailSchema, formData.email)
+      const passwordError = validateField(passwordSchema, formData.password)
+
+      if (emailError) {
+        setErrors({ email: emailError })
+        return
+      }
+
+      if (passwordError) {
+        setErrors({ password: passwordError })
+        return;
+      }
+
+      const response = await login({
+        email: formData.email,
+        password: formData.password
+      })
+      if (response) {
+        Alert.alert("Login successful")
+        router.replace('/(protected)/Home')
+        console.log('Response', response);
+      } else {
+        Alert.alert('Login Failed')
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
-        Alert.alert("Login Failed", error.message);
-      } else {
-        Alert.alert("Login Failed", 'An unexpected error occurred.');
-      }
+      Alert.alert(
+        'Login Failed',
+        error instanceof Error ? error.message : 'An unexpected error occurred'
+      )
     }
-  };
-  const onForgotPassword = ()=>{
-    setForgotPasswordEmail('')
-    setCurrentScreen('forgot')
   }
 
-  const handleResetPassword = ()=>{
-    setCurrentScreen('confirm');
+  const handleSendOTP = async () => {
+    try {
+      const emailError = validateField(emailSchema, formData.forgotPasswordEmail)
+      if (emailError) {
+        setErrors({ forgotPasswordEmail: emailError })
+        return
+      }
+
+      const result = await sendOTP({ email: formData.forgotPasswordEmail })
+      if (result) {
+        setCurrentScreen('verify')
+      } else {
+        Alert.alert('Failed to Send OTP', result)
+      }
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error instanceof Error ? error.message : 'Failed to send OTP'
+      )
+    }
   }
-  
+
+  const handleVerifyOTP = async (code: string[]) => {
+    try {
+      const otp = code.join('');
+      const result = await verifyOTP({
+         otp: otp,
+         emailId: formData.forgotPasswordEmail
+         })
+      if (result) {
+        setCurrentScreen('reset')
+      } else {
+        Alert.alert('Verification Failed', result)
+      }
+    } catch (error) {
+      Alert.alert(
+        'Verification Failed',
+        error instanceof Error ? error.message : 'Invalid OTP'
+      )
+    }
+  }
+
+  const handleResetPassword = async () => {
+    try {
+      const result = await resetPassword({ 
+        email: formData.forgotPasswordEmail,
+        password: formData.newPassword 
+      })
+      const newPasswordError = validateField(passwordSchema, formData.newPassword)
+      if (newPasswordError) {
+        setErrors({ ...errors, newPassword: newPasswordError })
+        return
+      }
+
+      if (formData.newPassword !== formData.confirmPassword) {
+        setErrors({ ...errors, confirmPassword: "Passwords do not match" })
+        return
+      }
+
+      if (result) {
+        setCurrentScreen('confirm')
+        setFormData({ ...formData, newPassword: '', confirmPassword: '' })
+      } else {
+        Alert.alert('Password Reset Failed')
+      }
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error instanceof Error ? error.message : 'Failed to reset password'
+      )
+    }
+  }
+
+  // Initial splash screen timer
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCurrentScreen('login');
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+    const timer = setTimeout(() => setCurrentScreen('login'), 3000)
+    return () => clearTimeout(timer)
+  }, [])
 
-  const onVerify =() => {
-    setCurrentScreen('reset');
+  const screenProps = {
+    formData,
+    errors,
+    visiblePasswords,
+    isRememberMe,
+    handleFieldChange,
+    togglePasswordVisibility,
+    setIsRememberMe,
+    setCurrentScreen
   }
 
   return (
@@ -92,40 +173,34 @@ const AuthLayout = () => {
       {currentScreen === 'splash' && <SplashScreenPage />}
       {currentScreen === 'login' && (
         <LoginScreen
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          isChecked={isChecked}
-          setIsChecked={setIsChecked}
-          emailError={emailError}
-          setEmailError={setEmailError}
-          passwordError={passwordError}
-          setPasswordError={setPasswordError}
-          isPasswordVisible={isPasswordVisible}
-          togglePasswordVisibility={togglePasswordVisibility}
+          {...screenProps}
           handleLogin={handleLogin}
-          onForgotPassword={onForgotPassword}
+          onForgotPassword={() => { setCurrentScreen('forgot'); setFormData({ ...formData, forgotPasswordEmail: '' }); setErrors({}) }}
         />
       )}
       {currentScreen === 'forgot' && (
         <ForgotPasswordScreen
-          setForgotPasswordEmail={setForgotPasswordEmail}
-          forgotPasswordEmail={forgotPasswordEmail}
-          onBackToLogin={() => setCurrentScreen('login')}
-          onResetPassword={() => setCurrentScreen('verify')}
+          {...screenProps}
+          onSendOTP={handleSendOTP}
+          onBack={() => setCurrentScreen('login')}
         />
       )}
       {currentScreen === 'verify' && (
         <EmailVerificationScreen
-         onVerify={onVerify}
-         onBackToForgotPassword ={()=>setCurrentScreen('forgot')}/>
+          handleVerifyOTP={handleVerifyOTP}
+          onBackToForgotPassword={() => setCurrentScreen('forgot')}
+        />
       )}
       {currentScreen === 'reset' && (
-        <ResetPasswordScreen isPasswordVisible={isPasswordVisible} isConfirmPasswordVisible={isConfirmPasswordVisible} togglePasswordVisibility={togglePasswordVisibility} onConfirm={()=>setCurrentScreen('confirm')}/>
+        <ResetPasswordScreen
+          {...screenProps}
+          handleResetPassword={handleResetPassword}
+        />
       )}
       {currentScreen === 'confirm' && (
-        <ConfirmationScreen onBackToLogin={() => setCurrentScreen('login')}/>
+        <ConfirmationScreen
+          onBackToLogin={() => setCurrentScreen('login')}
+        />
       )}
     </>
   )

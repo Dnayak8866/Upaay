@@ -16,7 +16,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.coder_chandan.UpaayMutualApp"
+      "package": "com.upaayapp.UpaayMutualApp"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +43,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "6ce1a7ae-1623-44ee-a128-82d7a14111b7"
+        "projectId": "455e38fd-2e21-4682-be0e-c1e8900d65d3"
       }
     }
   }
