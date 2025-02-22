@@ -22,7 +22,12 @@ namespace UpaayBackendService.Application.Services
                 return false;
             }
             return true;
+        }
 
+        public async Task<bool> ResetPassword(string email, string password)
+        {
+            var isPasswordUpdated = BCrypt.Net.BCrypt.HashPassword(password);
+            return await _userRepository.ResetPassword(email, isPasswordUpdated);
         }
 
     }

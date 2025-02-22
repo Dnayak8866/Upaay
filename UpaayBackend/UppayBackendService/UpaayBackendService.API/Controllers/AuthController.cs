@@ -40,5 +40,20 @@ namespace UpaayBackendService.API.Controllers
             
             return Ok(response);
         }
+
+        [HttpPost("reset/password")]
+        public async Task<IActionResult> ResetPassword(PasswordResetRequest request)
+        {
+            try
+            {
+                var resetPasswordHandler = _serviceProvider.GetRequiredService<IHandler<PasswordResetRequest, ApiResponse>>();
+                var response = await resetPasswordHandler.HandleAsync(request);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

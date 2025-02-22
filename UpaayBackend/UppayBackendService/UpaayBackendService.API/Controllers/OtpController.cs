@@ -15,15 +15,15 @@ namespace UpaayBackendService.API.Controllers
             _serviceProvider = serviceProvider;
         }
 
-        [HttpPost("send-otp")]
-        public async Task<IActionResult> CreateOtp(string emailid)
+        [HttpPost("send")]
+        public async Task<IActionResult> CreateOtp(OtpRequest request)
         {
-            var createOtpHandler = _serviceProvider.GetRequiredService<IHandler<string, UserOtpResponse>>();
-            var response = await createOtpHandler.HandleAsync(emailid);
+            var createOtpHandler = _serviceProvider.GetRequiredService<IHandler<OtpRequest, UserOtpResponse>>();
+            var response = await createOtpHandler.HandleAsync(request);
             return Ok(response);
         }
 
-        [HttpPost("verify-otp")]
+        [HttpPost("verify")]
         public async Task<IActionResult> VerifyOtp(VerifyOtpRequest request)
         {
             var verfyOtpHandler = _serviceProvider.GetRequiredService<IHandler<VerifyOtpRequest, UserOtpResponse>>();
