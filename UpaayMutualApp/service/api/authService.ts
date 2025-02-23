@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginRequest, LoginResponse, resetPasswordRequest, SendOTPRequest, verifyRequest } from '../types/authTypes';
+import { LoginRequest, LoginResponse, ResetPasswordRequest, SendOTPRequest, VerifyRequest } from '../types/authTypes';
 import { API_URL } from '@/environment/env.dev';
 import { FORGOT_PASSWORD, RESET_PASSWORD, USER_LOGIN, VERIFY_OTP } from '@/constants/endpoints';
 
@@ -30,7 +30,7 @@ export const sendOTP = async (reqObj: SendOTPRequest) => {
     }
 }
 
-export const verifyOTP = async (reqObj: verifyRequest) => {
+export const verifyOTP = async (reqObj: VerifyRequest) => {
     try {
         const response = await axios.post(`${API_URL}/${VERIFY_OTP}`,reqObj);
         return response.data;
@@ -43,7 +43,7 @@ export const verifyOTP = async (reqObj: verifyRequest) => {
     }
 }
 
-export const resetPassword = async(reqObj: resetPasswordRequest) => {
+export const resetPassword = async(reqObj: ResetPasswordRequest) => {
     try {
         const response = await axios.post(`${API_URL}/${RESET_PASSWORD}`, reqObj);
         return response.data;

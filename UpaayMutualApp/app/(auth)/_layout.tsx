@@ -44,20 +44,28 @@ const AuthLayout = () => {
     setVisiblePasswords(prev => ({ ...prev, [field]: !prev[field] }))
   }
 
+
+  const validateCredentials = () => {
+    const emailError = validateField(emailSchema, formData.email)
+    const passwordError = validateField(passwordSchema, formData.password)
+
+    if (emailError) {
+      setErrors({ email: emailError })
+      return false
+    }
+
+    if (passwordError) {
+      setErrors({ password: passwordError })
+      return false
+    }
+
+    return true
+  }
+
   const handleLogin = async () => {
     try {
-      const emailError = validateField(emailSchema, formData.email)
-      const passwordError = validateField(passwordSchema, formData.password)
-
-      if (emailError) {
-        setErrors({ email: emailError })
-        return
-      }
-
-      if (passwordError) {
-        setErrors({ password: passwordError })
-        return;
-      }
+      const isValid = validateCredentials()
+      if (!isValid) return
 
       const response = await login({
         email: formData.email,

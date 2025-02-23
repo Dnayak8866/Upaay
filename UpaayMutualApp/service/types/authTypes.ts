@@ -14,12 +14,12 @@ export interface SendOTPRequest {
     email: string;
 }
 
-export interface verifyRequest {
+export interface VerifyRequest {
     otp: string;
     emailId: string;
 }
 
-export interface resetPasswordRequest{
+export interface ResetPasswordRequest{
     email: string;
     password: string;
 }
