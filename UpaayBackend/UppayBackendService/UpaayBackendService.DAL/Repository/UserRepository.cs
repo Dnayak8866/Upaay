@@ -17,43 +17,16 @@ namespace UpaayBackendService.DAL.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email.ToLower() ==  email.ToLower());
         }
 
-        public async Task<bool> CreateOTP(int otp, int userId)
+        public async Task<bool> ResetPassword(string email, string password)
         {
-            var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (userOtpDetails == null)
+            var user = await GetUserAsync(email);
+            if(user == null)
             {
-                userOtpDetails = new UserOtpVerification
-                {
-                    UserId = userId,
-                    Otp = otp,
-                    NoOfAttempts = 0,
-                    ExpiryDate = DateTime.Now.AddMinutes(10),
-                    CreatedDate = DateTime.Now
-                };
-                await _dbContext.UserOtpVerifications.AddAsync(userOtpDetails);
-            }
-            else
-            {
-                userOtpDetails.Otp = otp;
-                userOtpDetails.ExpiryDate = DateTime.Now.AddMinutes(10);
-                userOtpDetails.NoOfAttempts = 0;
-                userOtpDetails.CreatedDate = DateTime.Now;
-                await _dbContext.SaveChangesAsync();
-            }
-            return true;
-        }
-        public async Task<bool> VerifyOTP(int otp, int userId)
-        {
-            var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userId);
-            if(userOtpDetails == null|| userOtpDetails.Otp != otp)
-            {
-                userOtpDetails.NoOfAttempts++;
-                await _dbContext.UserOtpVerifications.AddAsync(userOtpDetails);
-                await _dbContext.SaveChangesAsync();
-
                 return false;
             }
 
+            user.Password = password;
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }

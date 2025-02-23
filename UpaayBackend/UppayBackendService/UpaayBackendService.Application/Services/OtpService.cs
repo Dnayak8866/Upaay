@@ -25,7 +25,7 @@ namespace UpaayBackendService.Application.Services
                 return null; 
             }
             var otp = GenerateOtp(4);
-            await _userRepository.CreateOTP(otp, user.UserId);
+            await _otpRepository.CreateOTP(otp, user.UserId, emailId);
             return otp;
 
         }

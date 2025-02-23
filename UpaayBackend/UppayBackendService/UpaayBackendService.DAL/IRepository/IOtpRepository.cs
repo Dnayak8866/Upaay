@@ -9,7 +9,7 @@ namespace UpaayBackendService.DAL.IRepository
 {
     public interface IOtpRepository
     {
-        Task<bool> CreateOTP(int otp, int userId);
+        Task<bool> CreateOTP(int otp, int userId, string emailId);
         Task<bool> VerifyOTP(int otp, int userId);
         Task<UserOtpVerification> GetOtpByUserId(int userID);
         Task<bool> UpdateOtpDetails(UserOtpVerification userOtpVerification);

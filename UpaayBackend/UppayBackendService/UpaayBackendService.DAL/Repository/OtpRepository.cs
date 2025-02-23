@@ -16,7 +16,7 @@ namespace UpaayBackendService.DAL.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task<bool> CreateOTP(int otp, int userId)
+        public async Task<bool> CreateOTP(int otp, int userId, string emailId)
         {
             var userOtpDetails = await _dbContext.UserOtpVerifications.FirstOrDefaultAsync(u => u.UserId == userId);
             if (userOtpDetails == null)
@@ -27,9 +27,11 @@ namespace UpaayBackendService.DAL.Repository
                     Otp = otp,
                     NoOfAttempts = 0,
                     ExpiryDate = DateTime.Now.AddMinutes(10),
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = emailId
                 };
                 await _dbContext.UserOtpVerifications.AddAsync(userOtpDetails);
+                await _dbContext.SaveChangesAsync();
             }
             else
             {
