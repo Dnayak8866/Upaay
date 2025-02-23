@@ -16,7 +16,7 @@ namespace UpaayBackendService.DAL
             services.AddScoped<IOtpRepository, OtpRepository>();
             //Initialize DB context here
             services.AddDbContext<UpaayDbContext>(options =>
-            options.UseSqlServer(configuraion.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuraion.GetConnectionString("DefaultConnection")));
         }
     }
 }
