@@ -1,6 +1,8 @@
-import { FontAwesome } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import LockIcon from '../assets/icons/lock.svg';
+import EyeOpen from '../assets/icons/eye.svg';
+import EyeClose from '../assets/icons/eye-slash.svg';
 
 type ResetPasswordProps = {
   formData: {
@@ -38,7 +40,7 @@ const ResetPasswordScreen = ({
           </View>
           <Text className="text-gray-700 mt-6 font-bold font-poppins">Enter New Password</Text>
           <View className="flex-row items-center border border-[#E6EAEE] rounded-lg px-3 py-2 bg-white mt-2">
-            <FontAwesome name="lock" size={18} color="gray" />
+            <LockIcon />
             <TextInput
               className="flex-1 ml-2 text-gray-700"
               placeholder="Enter new password"
@@ -47,13 +49,12 @@ const ResetPasswordScreen = ({
               onChangeText={(value) => handleFieldChange('newPassword', value)}
             />
             <TouchableOpacity onPress={() => togglePasswordVisibility('password')}>
-              <FontAwesome name={visiblePasswords.password ? "eye" : "eye-slash"} size={16} color="gray" />
-            </TouchableOpacity>
+              {visiblePasswords.password ? <EyeOpen height={20} width={18}/> : <EyeClose height={20} width={18}/>}            </TouchableOpacity>
           </View>
           {newPasswordError && <Text className="text-red-500 text-sm mt-1">{newPasswordError}</Text>}
           <Text className="text-gray-700 mt-6 font-bold font-poppins">Re-enter New Password</Text>
           <View className="flex-row items-center border border-[#E6EAEE] rounded-lg px-3 py-2 bg-[#FFFFFF] mt-2">
-            <FontAwesome name="lock" size={18} color="gray" />
+            <LockIcon />
             <TextInput
               className="flex-1 ml-2 text-gray-700 font-poppins"
               placeholder="Confirm password"
@@ -62,7 +63,7 @@ const ResetPasswordScreen = ({
               onChangeText={(value) => handleFieldChange('confirmPassword', value)}
             />
             <TouchableOpacity onPress={() => togglePasswordVisibility('confirmPassword')}>
-              <FontAwesome name={visiblePasswords.confirmPassword ? "eye" : "eye-slash"} size={16} color="gray" />
+              {visiblePasswords.confirmPassword ? <EyeOpen height={20} width={18}/> : <EyeClose height={20} width={18}/>}
             </TouchableOpacity>
           </View>
           {confirmPasswordError && <Text className="text-red-500 text-sm mt-1">{confirmPasswordError}</Text>}

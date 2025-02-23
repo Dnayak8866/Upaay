@@ -5,14 +5,16 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   ScrollView,
   Image,
   Dimensions,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import Checkbox from "expo-checkbox";
+import EmailIcon from '../assets/icons/sms.svg';
+import LockIcon from '../assets/icons/lock.svg';
+import EyeOpen from '../assets/icons/eye.svg';
+import EyeClose from '../assets/icons/eye-slash.svg';
 
 const { width } = Dimensions.get("window");
 
@@ -81,7 +83,7 @@ const LoginScreen = ({
               errors.email ? "border-red-500" : ""
             }`}
           >
-            <FontAwesome name="envelope" size={16} color="gray" />
+            <EmailIcon height={20}/>
             <TextInput
               className="flex-1 ml-2 text-gray-700 font-poppins"
               placeholder="hello@example.com"
@@ -98,7 +100,7 @@ const LoginScreen = ({
               errors.password ? "border-red-500" : ""
             }`}
           >
-            <FontAwesome name="lock" size={18} color="gray" />
+            <LockIcon height={20}/>
             <TextInput
               className="flex-1 ml-2 text-gray-700 font-poppins"
               placeholder="Enter password"
@@ -107,11 +109,7 @@ const LoginScreen = ({
               onChangeText={(text) => handleFieldChange("password", text)}
             />
             <TouchableOpacity onPress={() => togglePasswordVisibility("password")}>
-              <FontAwesome
-                name={visiblePasswords.password ? "eye" : "eye-slash"}
-                size={16}
-                color="gray"
-              />
+              {visiblePasswords.password ? <EyeOpen height={20} width={18}/> : <EyeClose height={20} width={18}/>}
             </TouchableOpacity>
           </View>
           {errors.password && <Text className="text-red-500 text-sm font-poppins">{errors.password}</Text>}

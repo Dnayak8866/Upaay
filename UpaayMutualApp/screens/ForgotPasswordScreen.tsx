@@ -1,8 +1,8 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
-import AntDesign from '@expo/vector-icons/AntDesign'
 import { StatusBar } from 'expo-status-bar'
-import { FontAwesome } from '@expo/vector-icons'
+import EmailIcon from '../assets/icons/sms.svg';
+import ArrowLeft from '../assets/icons/arrow-left.svg';
 
 type ForgotPasswordScreenProps = {
   formData: { forgotPasswordEmail: string }
@@ -19,7 +19,7 @@ const ForgotPasswordScreen = ({ formData, errors, handleFieldChange, onSendOTP, 
         <View className="flex-1 px-6 mt-20">
           <TouchableOpacity onPress={onBack} className="mb-20">
             <View className="w-7 h-7 bg-[#EAEAEB] p-1">
-              <AntDesign name="left" size={15} color="#292D32" />
+              <ArrowLeft/>
             </View>
           </TouchableOpacity>
 
@@ -32,7 +32,7 @@ const ForgotPasswordScreen = ({ formData, errors, handleFieldChange, onSendOTP, 
 
           <Text className="text-gray-700 mb-2 font-poppins font-bold">Email Address</Text>
           <View className="flex-row items-center border border-[#E6EAEE] rounded-lg px-3 py-2 mb-1 bg-[#FFFFFF]">
-            <FontAwesome name="envelope" size={16} color="gray" />
+            <EmailIcon height={20}/>
             <TextInput
               className="flex-1 ml-2 text-gray-700 font-poppins"
               placeholder="hello@example.com"

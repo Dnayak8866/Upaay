@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { StatusBar } from 'expo-status-bar';
+import ArrowLeft from '../assets/icons/arrow-left.svg'
 
 type EmailVerificationProps = {
     handleVerifyOTP: (code: string[]) => void
@@ -50,7 +50,10 @@ const EmailVerificationScreen = ({ handleVerifyOTP, onBackToForgotPassword }: Em
             <ScrollView contentContainerStyle={{ flex: 1 }}>
                 <View className="flex-1  px-6 mt-20">
                     <TouchableOpacity onPress={onBackToForgotPassword} className="mb-20">
-                        <View className="text-lg  flex-1"><View className='w-7 h-7 bg-[#EAEAEB] p-1'><AntDesign name="left" size={15} color="#292D32" /></View></View>
+                        <View className="text-lg  flex-1"><View className='w-7 h-7 bg-[#EAEAEB] p-1'>
+                            <ArrowLeft />
+                        </View>
+                        </View>
                     </TouchableOpacity>
                     <View className="mb-9">
                         <Text className="text-3xl font-extrabold text-gray-900">Email Verification</Text>
@@ -60,8 +63,9 @@ const EmailVerificationScreen = ({ handleVerifyOTP, onBackToForgotPassword }: Em
                         {code.map((digit, index) => (
                             <TextInput
                                 key={index}
-                                className="border border-[#E6EAEE] bg-[#FFFFFF] rounded-lg w-14 h-14 text-center text-xl focus:border-primary"
+                                className="border border-[#E6EAEE] bg-[#FFFFFF] rounded-lg w-16 h-16 text-center text-xl focus:border-primary placeholder:text-gray-400 font-poppins font-bold"
                                 maxLength={1}
+                                placeholder='0'
                                 keyboardType="numeric"
                                 value={digit}
                                 ref={(ref) => inputRefs.current[index] = ref}
@@ -69,7 +73,7 @@ const EmailVerificationScreen = ({ handleVerifyOTP, onBackToForgotPassword }: Em
                             />
                         ))}
                     </View>
-                    <TouchableOpacity className="bg-primary py-3 rounded-lg mt-8 disabled:bg-green-300" onPress={()=>handleVerifyOTP(code)} disabled={!isCodeComplete}>
+                    <TouchableOpacity className="bg-primary py-3 rounded-lg mt-8 disabled:bg-green-300" onPress={() => handleVerifyOTP(code)} disabled={!isCodeComplete}>
                         <Text className="text-center text-white text-lg font-semibold">Verify</Text>
                     </TouchableOpacity>
                     <Text className="text-center mt-4 text-gray-500">
