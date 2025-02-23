@@ -30,62 +30,103 @@ namespace UpaayBackendService.DAL.Models
         {
             modelBuilder.Entity<ClientPersonalDetails>(entity =>
             {
-                entity.HasKey(e => e.ClientId);
+                entity.HasKey(e => e.ClientId).HasName("pk_clientdetails");
 
-                entity.Property(e => e.AadharCardNo).IsRequired();
-                entity.Property(e => e.Email).IsRequired();
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(300);
-                entity.Property(e => e.PanCardNo).IsRequired();
-                entity.Property(e => e.ProfilePhoto).IsRequired();
+                entity.ToTable("clientpersonaldetails");
+
+                entity.Property(e => e.ClientId)
+                    .UseIdentityAlwaysColumn()
+                    .HasColumnName("clientid");
+                entity.Property(e => e.AadharCardNo).HasColumnName("aadharcardno");
+                entity.Property(e => e.AnnualIncome).HasColumnName("annualincome");
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .HasColumnName("createdby");
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("createddate");
+                entity.Property(e => e.DateOfBirth)
+                    .HasColumnType("timestamp(6) without time zone")
+                    .HasColumnName("dateofbirth");
+                entity.Property(e => e.Email).HasColumnName("email");
+                entity.Property(e => e.Gender).HasColumnName("gender");
+                entity.Property(e => e.IsEmailVerified).HasColumnName("isemailverified");
+                entity.Property(e => e.IsMobileNoVerified).HasColumnName("ismobilenoverified");
+                entity.Property(e => e.IsPanVerified).HasColumnName("ispanverified");
+                entity.Property(e => e.MaritalStatus).HasColumnName("maritalstatus");
+                entity.Property(e => e.MobileNo).HasColumnName("mobileno");
+                entity.Property(e => e.Name).HasMaxLength(300);
+                entity.Property(e => e.Occupation).HasColumnName("occupation");
+                entity.Property(e => e.PanCardNo).HasColumnName("pancardno");
+                entity.Property(e => e.ProfilePhoto).HasColumnName("profilephoto");
                 entity.Property(e => e.RelationName)
-                    .IsRequired()
-                    .HasMaxLength(300);
-                entity.Property(e => e.Signature).IsRequired();
+                    .HasMaxLength(300)
+                    .HasColumnName("relationname");
+                entity.Property(e => e.RelationType).HasColumnName("relationtype");
+                entity.Property(e => e.Signature).HasColumnName("signature");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C7B088C0A");
+                entity.HasKey(e => e.UserId).HasName("users_pkey");
 
+                entity.ToTable("users");
+
+                entity.Property(e => e.UserId)
+                    .UseIdentityAlwaysColumn()
+                    .HasColumnName("userid");
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                    .HasColumnName("createdby");
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("createddate");
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-                entity.Property(e => e.Password)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasColumnName("email");
+                entity.Property(e => e.Password).HasMaxLength(100);
+                entity.Property(e => e.ReferenceNo).HasColumnName("referenceno");
                 entity.Property(e => e.UpdatedBy)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                    .HasColumnName("updatedby");
+                entity.Property(e => e.UpdatedDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("updateddate");
             });
 
             modelBuilder.Entity<UserOtpVerification>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("PK__UserOtpV__3214EC07D02E91C8");
+                entity.HasKey(e => e.Id).HasName("userotpverification_pkey");
 
-                entity.ToTable("UserOtpVerification");
+                entity.ToTable("userotpverification");
 
+                entity.Property(e => e.Id)
+                    .UseIdentityAlwaysColumn()
+                    .HasColumnName("id");
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+                    .HasColumnName("createdby");
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("createddate");
+                entity.Property(e => e.ExpiryDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("expirydate");
+                entity.Property(e => e.NoOfAttempts).HasColumnName("noofattempts");
+                entity.Property(e => e.Otp).HasColumnName("otp");
                 entity.Property(e => e.UpdatedBy)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                    .HasColumnName("updatedby");
+                entity.Property(e => e.UpdatedDate)
+                    .HasColumnType("timestamp(3) without time zone")
+                    .HasColumnName("updateddate");
+                entity.Property(e => e.UserId).HasColumnName("userid");
 
                 entity.HasOne(d => d.User)
-                    .WithOne(p => p.UserOtpVerifications)
-                    .HasForeignKey<UserOtpVerification>(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserOtpVe__UserI__48CFD27E");
+                   .WithOne(p => p.UserOtpVerifications)
+                   .HasForeignKey<UserOtpVerification>(d => d.UserId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("userotpverification_userid_fkey");
             });
 
 
