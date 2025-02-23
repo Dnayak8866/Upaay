@@ -5,6 +5,6 @@ namespace UpaayBackendService.Application.IServices;
 
 public interface IOtpService
 {
-    Task<bool> CreateOtp(string emailId);
+    Task<int?> CreateOtp(string emailId);
     Task<VerifyOtpResult> VerifyOtp(int otp, string emailId);
 }
