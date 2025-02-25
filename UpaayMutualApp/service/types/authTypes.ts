@@ -5,10 +5,21 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     message: string;
-    token? : string;
-    data ? : {
-        id: string;
-        email: string;
-        password: string;
-    }
+    accessToken : string;
+    success: boolean;
+    refreshToken: string;
+}
+
+export interface SendOTPRequest {
+    email: string;
+}
+
+export interface VerifyRequest {
+    otp: string;
+    emailId: string;
+}
+
+export interface ResetPasswordRequest{
+    email: string;
+    password: string;
 }
