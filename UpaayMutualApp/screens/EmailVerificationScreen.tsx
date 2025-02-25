@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput } fro
 import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import ArrowLeft from '../assets/icons/arrow-left.svg'
+import CustomButton from '@/components/common/CustomButton';
 
 type EmailVerificationProps = {
     handleVerifyOTP: (code: string[]) => void
@@ -73,9 +74,11 @@ const EmailVerificationScreen = ({ handleVerifyOTP, onBackToForgotPassword }: Em
                             />
                         ))}
                     </View>
-                    <TouchableOpacity className="bg-primary py-3 rounded-lg mt-8 disabled:bg-green-300" onPress={() => handleVerifyOTP(code)} disabled={!isCodeComplete}>
-                        <Text className="text-center text-white text-lg font-semibold">Verify</Text>
-                    </TouchableOpacity>
+                    <CustomButton
+                        onPress={() => handleVerifyOTP(code)}
+                        title="Verify"
+                        disabled={!isCodeComplete}
+                    />
                     <Text className="text-center mt-4 text-gray-500">
                         {isResendAvailable ? (
                             <TouchableOpacity onPress={handleResend}>

@@ -1,8 +1,10 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity,} from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import EmailIcon from '../assets/icons/sms.svg';
 import ArrowLeft from '../assets/icons/arrow-left.svg';
+import CustomTextInput from '@/components/common/CustomTextInput';
+import CustomButton from '@/components/common/CustomButton';
 
 type ForgotPasswordScreenProps = {
   formData: { forgotPasswordEmail: string }
@@ -16,7 +18,7 @@ const ForgotPasswordScreen = ({ formData, errors, handleFieldChange, onSendOTP, 
   return (
     <SafeAreaView className="flex-1 bg-green-50">
       <ScrollView contentContainerStyle={{ flex: 1 }} automaticallyAdjustKeyboardInsets={true}>
-        <View className="flex-1 px-6 mt-20">
+        <View className="flex-1 px-6 mt-16">
           <TouchableOpacity onPress={onBack} className="mb-20">
             <View className="w-7 h-7 bg-[#EAEAEB] p-1">
               <ArrowLeft/>
@@ -31,12 +33,10 @@ const ForgotPasswordScreen = ({ formData, errors, handleFieldChange, onSendOTP, 
           </View>
 
           <Text className="text-gray-700 mb-2 font-poppins font-bold">Email Address</Text>
-          <View className="flex-row items-center border border-[#E6EAEE] rounded-lg px-3 py-2 mb-1 bg-[#FFFFFF]">
+          <View className={`flex-row items-center border border-[#E6EAEE] rounded-lg px-3 py-2 mb-1 bg-[#FFFFFF] ${errors.forgotPasswordEmail ? "border-red-500" : ""}`}>
             <EmailIcon height={20}/>
-            <TextInput
-              className="flex-1 ml-2 text-gray-700 font-poppins"
-              placeholder="hello@example.com"
-              keyboardType="email-address"
+            <CustomTextInput
+              placeholder='hello@example.com'
               value={formData.forgotPasswordEmail.toLowerCase()}
               onChangeText={(value) => handleFieldChange('forgotPasswordEmail', value)}
             />
@@ -45,14 +45,11 @@ const ForgotPasswordScreen = ({ formData, errors, handleFieldChange, onSendOTP, 
           {errors.forgotPasswordEmail && (
             <Text className="text-red-500 text-sm font-poppins">{errors.forgotPasswordEmail}</Text>
           )}
-
-          <TouchableOpacity
-            className="bg-primary py-3 rounded-lg mb-4 mt-6 disabled:bg-green-300"
+          <CustomButton
             onPress={onSendOTP}
+            title="Continue"
             disabled={!formData.forgotPasswordEmail.trim()}
-          >
-            <Text className="text-center text-white text-lg font-semibold">Continue</Text>
-          </TouchableOpacity>
+          />
         </View>
         <StatusBar style="dark" />
       </ScrollView>

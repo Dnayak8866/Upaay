@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
@@ -15,6 +14,8 @@ import EmailIcon from '../assets/icons/sms.svg';
 import LockIcon from '../assets/icons/lock.svg';
 import EyeOpen from '../assets/icons/eye.svg';
 import EyeClose from '../assets/icons/eye-slash.svg';
+import CustomTextInput from "@/components/common/CustomTextInput";
+import CustomButton from "@/components/common/CustomButton";
 
 const { width } = Dimensions.get("window");
 
@@ -84,10 +85,8 @@ const LoginScreen = ({
             }`}
           >
             <EmailIcon height={20}/>
-            <TextInput
-              className="flex-1 ml-2 text-gray-700 font-poppins"
+            <CustomTextInput
               placeholder="hello@example.com"
-              keyboardType="email-address"
               value={formData.email}
               onChangeText={(text) => handleFieldChange("email", text.toLowerCase())}
             />
@@ -101,8 +100,7 @@ const LoginScreen = ({
             }`}
           >
             <LockIcon height={20}/>
-            <TextInput
-              className="flex-1 ml-2 text-gray-700 font-poppins"
+            <CustomTextInput
               placeholder="Enter password"
               secureTextEntry={!visiblePasswords.password}
               value={formData.password}
@@ -128,10 +126,10 @@ const LoginScreen = ({
               <Text className="text-primary font-semibold">Forgot Password?</Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity className="bg-primary py-3 rounded-lg mb-4 mt-6" onPress={handleLogin}>
-            <Text className="text-center text-white text-lg font-semibold">Sign In</Text>
-          </TouchableOpacity>
+          <CustomButton
+            onPress={handleLogin}
+            title = "Sign In"
+          />
         </View>
         <StatusBar style="dark" />
       </ScrollView>
