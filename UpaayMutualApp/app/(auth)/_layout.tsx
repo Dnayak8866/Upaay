@@ -72,11 +72,10 @@ const AuthLayout = () => {
         password: formData.password
       })
       if (response) {
-        Alert.alert("Login successful")
         router.replace('/(protected)/Home')
         console.log('Response', response);
       } else {
-        Alert.alert('Login Failed')
+        console.error('Login Failed')
       }
     } catch (error) {
       Alert.alert(
