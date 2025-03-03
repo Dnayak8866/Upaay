@@ -1,42 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Tabs, usePathname } from 'expo-router';
-import { Animated, View } from 'react-native';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View } from 'react-native';
+import BriefCaseIcon from '../../assets/icons/brifecase-tick.svg';
+import ProfileIcon from '../../assets/icons/user.svg';
+import SeachIcon from '../../assets/icons/search-normal.svg';
+import HomeIcon from '../../assets/icons/home.svg';
+import HomeWhiteIcon from '../../assets/icons/Vector.svg';
+import BriefCaseWhiteIcon from '../../assets/icons/white-briefcase.svg';
+import SearchWhiteIcon from '../../assets/icons/search-normal-white.svg';
+import UserWhiteIcon from '../../assets/icons/user-white.svg';
 
-type AnimatedIconProps = {
-  name: any;
-  type: string;
-  color: string;
-  isActive: boolean;
-};
-
-const AnimatedIcon = ({ name, type, color, isActive }: AnimatedIconProps) => {
-  const translateY = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(translateY, {
-      toValue: isActive ? -20 : 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isActive]);
-
-  const IconComponent = type === 'AntDesign' ? AntDesign : MaterialCommunityIcons;
-  const iconColor = isActive ? 'white' : color;
-
-  return (
-    <Animated.View style={{ transform: [{ translateY }] }}>
-      <View
-        style={{
-          backgroundColor: isActive ? 'green' : 'transparent',
-        }}
-        className='rounded-full'
-      >
-        <IconComponent name={name} size={28} color={iconColor} />
-      </View>
-    </Animated.View>
-  );
-};
 
 const TabsLayout = () => {
   const pathname = usePathname();
@@ -47,17 +20,22 @@ const TabsLayout = () => {
       tabBarStyle: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-      }
+        height: '10%',
+        paddingTop:5,
+      },
     }}>
       <Tabs.Screen
         name="Home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <AnimatedIcon name="home" type="AntDesign" color={color} isActive={pathname === "/Home"} />
-          ),
+          tabBarIcon: ({ focused }) => (
+            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
+              {focused ? <HomeWhiteIcon width={20} height={20} /> : <HomeIcon width={20} height={20} />}
+            </View>),
           tabBarLabelStyle: {
             color: pathname === '/Home' ? 'green' : 'gray',
+            fontSize: 12,
+            marginTop:10,
           }
         }}
       />
@@ -65,11 +43,14 @@ const TabsLayout = () => {
         name="Investments"
         options={{
           title: 'Investments',
-          tabBarIcon: ({ color }) => (
-            <AnimatedIcon name="briefcase-variant-outline" type="MaterialCommunityIcons" color={color} isActive={pathname === "/Investments"} />
-          ),
+          tabBarIcon: ({ focused }) => (
+            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10, }}>
+              {focused ? <BriefCaseWhiteIcon width={20} height={20} /> : <BriefCaseIcon width={20} height={20} />}
+            </View>),
           tabBarLabelStyle: {
             color: pathname === '/Investments' ? 'green' : 'gray',
+            fontSize: 12,
+            marginTop:10,
           }
         }}
       />
@@ -77,11 +58,14 @@ const TabsLayout = () => {
         name="Discover"
         options={{
           title: 'Discover',
-          tabBarIcon: ({ color }) => (
-            <AnimatedIcon name="search1" type="AntDesign" color={color} isActive={pathname === "/Discover"} />
-          ),
+          tabBarIcon: ({ focused }) => (
+            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
+              {focused ? <SearchWhiteIcon width={20} height={20} /> : <SeachIcon width={20} height={20} />}
+            </View>),
           tabBarLabelStyle: {
             color: pathname === '/Discover' ? 'green' : 'gray',
+            fontSize: 12,
+            marginTop:10,
           }
         }}
       />
@@ -89,11 +73,14 @@ const TabsLayout = () => {
         name="Account"
         options={{
           title: 'Account',
-          tabBarIcon: ({ color }) => (
-            <AnimatedIcon name="user" type="AntDesign" color={color} isActive={pathname === "/Account"} />
-          ),
+          tabBarIcon: ({ focused }) => (
+            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
+              {focused ? <UserWhiteIcon width={20} height={20} /> : <ProfileIcon width={20} height={20} />}
+            </View>),
           tabBarLabelStyle: {
             color: pathname === '/Account' ? 'green' : 'gray',
+            fontSize: 12,
+            marginTop:10,
           }
         }}
       />
