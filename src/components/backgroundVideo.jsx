@@ -10,6 +10,7 @@ const BackgroundVideo = () => {
         videoRef.current.play(); // Play again
       }
     }, 3000); // 3 seconds delay before replay
+    
   };
 
   return (
