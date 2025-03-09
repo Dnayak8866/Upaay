@@ -12,14 +12,14 @@ export function Home() {
         We help You <span className="gradient-text">Trade With Ease.</span>
       </p>
       <main className="d-flex justify-content-center align-items-center gap-3">
-        <Link to="/register">
-          <button className="fw-bolder fs-4 btn animated-btn text-white">
-            <i className="bi bi-plus-circle-dotted me-2"></i> Register
-          </button>
-        </Link>
         <Link to="/login">
           <button className="fw-bolder fs-4 btn animated-btn text-white">
-            <i className="bi bi-pen me-2"></i> Login
+            <i className="bi bi-person-fill-check text-warning"></i> Login
+          </button>
+        </Link>
+        <Link to="/register">
+          <button className="fw-bolder fs-4 btn animated-btn text-white">
+            <i className="bi bi-person-fill-add text-danger"></i> Register
           </button>
         </Link>
       </main>
