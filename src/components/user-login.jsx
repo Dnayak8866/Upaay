@@ -1,13 +1,12 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const steps = [
-  { title: "Basic Details", fields: ["First Name", "Last Name", "DOB"] },
-  { title: "Contact Details", fields: ["Phone Number", "Email", "Address"] },
-  { title: "Bank Details", fields: ["Account Number", "IFSC Code", "Bank Name"] },
-  { title: "Declaration", fields: ["Agree to Terms", "Signature"] },
+  { title: "Basic Details", description: "Provide your Basic Details.", fields: ["First Name", "Last Name", "DOB"] },
+  { title: "Contact Details", description: "Lets Stay in Touch.", fields: ["Phone Number", "Email", "Address"] },
+  { title: "Bank Details", description: "Link your Bank Details", fields: ["Account Number", "IFSC Code", "Bank Name"] },
+  { title: "Declaration", description: "Accept the Declaration.", fields: ["Agree to Terms", "Signature"] },
 ];
 
 export function UserLogin() {
@@ -18,14 +17,20 @@ export function UserLogin() {
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setLineAnimated(false);
-      setTimeout(() => setCurrentStep(currentStep + 1), 500); // Adjusted timing for smoother transition
+      setTimeout(() => {
+        setCurrentStep((prevStep) => prevStep + 1);
+        setLineAnimated(true);
+      }, 500);
     }
   };
 
   const handleBack = () => {
     if (currentStep > 0) {
       setLineAnimated(false);
-      setTimeout(() => setCurrentStep(currentStep - 1), 500);
+      setTimeout(() => {
+        setCurrentStep((prevStep) => prevStep - 1);
+        setLineAnimated(true);
+      }, 500);
     }
   };
 
@@ -37,10 +42,20 @@ export function UserLogin() {
     <div className="container-fluid vh-100 d-flex">
       {/* Left Pane - Step Indicator */}
       <div className="col-3 bg-dark text-white d-flex flex-column align-items-center p-4 position-relative">
-        <div className="mb-4">
-          <h3 className="fw-bold">LOGO</h3>
-        </div>
         <h5 className="mb-3">Step {currentStep + 1} / {steps.length}</h5>
+        {/* General description of the current step with fading animation */}
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={currentStep}
+            className="text-light text-center mt-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {steps[currentStep].description}
+          </motion.p>
+        </AnimatePresence>
         <div className="w-100 position-relative">
           {steps.map((step, index) => (
             <div key={index} className="position-relative d-flex align-items-center mb-3">
@@ -58,7 +73,6 @@ export function UserLogin() {
                   initial={{ height: "0px" }}
                   animate={{ height: index < currentStep ? "40px" : "0px" }}
                   transition={{ duration: 0.2, delay: 0.0 }}
-                  onAnimationComplete={() => setLineAnimated(true)}
                 />
               )}
             </div>
@@ -86,10 +100,10 @@ export function UserLogin() {
                   <input
                     type="text"
                     id={field}
-                    name={field}
+                    name={field.replace(/\s+/g, "").toLowerCase()}
                     className="form-control"
                     placeholder={`Enter ${field}`}
-                    value={formData[field] || ""}
+                    value={formData[field.replace(/\s+/g, "").toLowerCase()] || ""}
                     onChange={handleChange}
                   />
                 </div>
