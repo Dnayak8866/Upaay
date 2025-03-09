@@ -1,5 +1,5 @@
 :root {
-  --section-height: calc(100vh-6rem);
+  --section-height: calc(100vh - 4.5rem);
   --primary-green: #2ecc71;
   --primary-blue: #3498db;
   --secondary-green: #00cc99 ;
@@ -9,6 +9,10 @@
 
 header {
   height: 4.5rem;
+}
+
+video{
+  opacity: 1.;
 }
 
 section {
@@ -78,6 +82,7 @@ section {
   border: none;
   border-radius: 5px;
   background: linear-gradient(45deg, var(--primary-green), var(--secondary-green), var(--primary-blue), var(--secondary-blue));
+  background-size: 200% 200%;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -85,37 +90,23 @@ section {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-/* True Rotating Border Effect */
-.animated-btn:hover:before {
-  content: "";
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 8px;
-  padding: 3px;
-  background: conic-gradient(
-    var(--primary-green),
-    var(--secondary-green),
-    var(--primary-blue),
-    var(--secondary-blue),
-    var(--primary-green)
-  );
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: rotate-border 2s linear infinite;
+/* Gradient Animation on Hover */
+.animated-btn:hover {
+  animation: move-gradient 1.5s linear infinite; /* Gradient movement */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); /* Glow Effect */
 }
 
-@keyframes rotate-border {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Gradient Moving Animation */
+@keyframes move-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+
+
+
