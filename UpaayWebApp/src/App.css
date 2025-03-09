@@ -1,0 +1,112 @@
+:root {
+  --section-height: calc(100vh - 4.5rem);
+  --primary-green: #2ecc71;
+  --primary-blue: #3498db;
+  --secondary-green: #00cc99 ;
+  --secondary-blue: #3333ff;
+}
+
+
+header {
+  height: 4.5rem;
+}
+
+video{
+  opacity: 1.;
+}
+
+section {
+  height: var(--section-height);
+}
+
+.gradient-text {
+  background-image: linear-gradient(to right, var(--primary-green), var(--primary-blue));
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.animate-charcter
+{
+   text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    var(--primary-green) 0%,
+    var(--primary-blue) 29%,
+    var(--secondary-green) 67%,
+    var(--secondary-blue) 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 1.5s linear infinite;
+  display: inline-block;
+      font-size: 190px;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.text-green{
+
+  color: var(--primary-green);
+}
+
+.text-blue{
+
+  color: var(--primary-blue);
+}
+
+.btn-green{
+
+  background-color: var(--primary-green);
+}
+
+.btn-blue{
+
+  background-color: var(--primary-blue);
+}
+
+.animated-btn {
+  position: relative;
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(45deg, var(--primary-green), var(--secondary-green), var(--primary-blue), var(--secondary-blue));
+  background-size: 200% 200%;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Gradient Animation on Hover */
+.animated-btn:hover {
+  animation: move-gradient 1.5s linear infinite; /* Gradient movement */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); /* Glow Effect */
+}
+
+/* Gradient Moving Animation */
+@keyframes move-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
+
