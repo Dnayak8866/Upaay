@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import ArrowLeft from '../assets/icons/arrow-left.svg'
 import CustomButton from '@/components/common/CustomButton';
+import { LinearGradient } from "expo-linear-gradient"
+
 
 type EmailVerificationProps = {
     handleVerifyOTP: (code: string[]) => void
@@ -47,51 +49,54 @@ const EmailVerificationScreen = ({ handleVerifyOTP, onBackToForgotPassword }: Em
         // onResendCode();
     };
     return (
-        <SafeAreaView className="flex-1 bg-green-50">
-            <ScrollView contentContainerStyle={{ flex: 1 }}>
-                <View className="flex-1  px-6 mt-20">
-                    <TouchableOpacity onPress={onBackToForgotPassword} className="mb-20">
-                        <View className="text-lg  flex-1"><View className='w-7 h-7 bg-[#EAEAEB] p-1'>
-                            <ArrowLeft />
+        <LinearGradient colors={["#EBFBF7", "transparent", "#EBFBF7"]} style={{ flex: 1 }}>
+            <SafeAreaView className="flex-1 bg-green-50">
+                <ScrollView contentContainerStyle={{ flex: 1 }}>
+                    <View className="flex-1  px-6 mt-20">
+                        <TouchableOpacity onPress={onBackToForgotPassword} className="mb-20">
+                            <View className="text-lg  flex-1">
+                                <View className='w-7 h-7 bg-[#EAEAEB] p-1 rounded-md'>
+                                    <ArrowLeft />
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <View className="mb-9">
+                            <Text className="text-3xl font-extrabold text-[#292D32] font-poppins">Email Verification</Text>
+                            <Text className="text-[#777F90] mt-2 font-poppins">Enter the verification code we just sent on your email address.</Text>
                         </View>
+                        <View className="flex-row justify-between mt-8">
+                            {code.map((digit, index) => (
+                                <TextInput
+                                    key={index}
+                                    className="border border-[#E6EAEE] bg-[#FFFFFF] rounded-lg w-16 h-16 text-center text-xl focus:border-primary  placeholder:text-[#D4D5D6] font-poppins font-bold"
+                                    maxLength={1}
+                                    placeholder='0'
+                                    keyboardType="numeric"
+                                    value={digit}
+                                    ref={(ref) => inputRefs.current[index] = ref}
+                                    onChangeText={(value) => handleCodeChange(index, value)}
+                                />
+                            ))}
                         </View>
-                    </TouchableOpacity>
-                    <View className="mb-9">
-                        <Text className="text-3xl font-extrabold text-gray-900">Email Verification</Text>
-                        <Text className="text-gray-600 mt-2">Enter the verification code we just sent on your email address.</Text>
+                        <CustomButton
+                            onPress={() => handleVerifyOTP(code)}
+                            title="Verify"
+                            disabled={!isCodeComplete}
+                        />
+                        <Text className="text-center mt-4 text-[#777F90] leading-5 font-poppins font-semibold">
+                            {isResendAvailable ? (
+                                <TouchableOpacity onPress={handleResend}>
+                                    <Text className="text-primary">Resend Code</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                `Resend Code in ${timer}s`
+                            )}
+                        </Text>
                     </View>
-                    <View className="flex-row justify-between mt-8">
-                        {code.map((digit, index) => (
-                            <TextInput
-                                key={index}
-                                className="border border-[#E6EAEE] bg-[#FFFFFF] rounded-lg w-16 h-16 text-center text-xl focus:border-primary placeholder:text-gray-400 font-poppins font-bold"
-                                maxLength={1}
-                                placeholder='0'
-                                keyboardType="numeric"
-                                value={digit}
-                                ref={(ref) => inputRefs.current[index] = ref}
-                                onChangeText={(value) => handleCodeChange(index, value)}
-                            />
-                        ))}
-                    </View>
-                    <CustomButton
-                        onPress={() => handleVerifyOTP(code)}
-                        title="Verify"
-                        disabled={!isCodeComplete}
-                    />
-                    <Text className="text-center mt-4 text-gray-500">
-                        {isResendAvailable ? (
-                            <TouchableOpacity onPress={handleResend}>
-                                <Text className="text-primary">Resend Code</Text>
-                            </TouchableOpacity>
-                        ) : (
-                            `Resend Code in ${timer}s`
-                        )}
-                    </Text>
-                </View>
-            </ScrollView>
-            <StatusBar style="dark" />
-        </SafeAreaView>
+                </ScrollView>
+                <StatusBar style="dark" />
+            </SafeAreaView>
+        </LinearGradient>
     );
 };
 
