@@ -1,6 +1,9 @@
 import React from 'react';
-import { Tabs, usePathname } from 'expo-router';
-import { View } from 'react-native';
+import { Tabs, usePathname, Redirect } from 'expo-router';
+import { Pressable, View, Dimensions } from 'react-native';
+import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
+import { useEffect } from 'react';
 import BriefCaseIcon from '../../assets/icons/brifecase-tick.svg';
 import ProfileIcon from '../../assets/icons/user.svg';
 import SeachIcon from '../../assets/icons/search-normal.svg';
@@ -9,33 +12,134 @@ import HomeWhiteIcon from '../../assets/icons/Vector.svg';
 import BriefCaseWhiteIcon from '../../assets/icons/white-briefcase.svg';
 import SearchWhiteIcon from '../../assets/icons/search-normal-white.svg';
 import UserWhiteIcon from '../../assets/icons/user-white.svg';
+import Svg, { Path } from 'react-native-svg';
 
+const TabBarBackground = ({ activeIndex = 0 }) => {
+  const { isDarkMode } = useTheme();
+  const { width } = Dimensions.get('window');
+  const height = 35;
+  const tabWidth = width / 4;
+  const curveWidth = 50;
+  const activeTabCenter = tabWidth * activeIndex + tabWidth / 2;
+  
+  return (
+    <View style={{ 
+      position: 'absolute', 
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: isDarkMode ? '#151718' : '#FFFFFF',
+      height: height,
+      overflow: 'hidden'
+    }}>
+      <Svg
+        width={width}
+        height={height}
+        style={{
+          backgroundColor: 'transparent',
+        }}
+      >
+        <Path
+          d={`
+            M 0 ${height}
+            L 0 0
+            L ${activeTabCenter - curveWidth} 0
+            C ${activeTabCenter - curveWidth / 2} 0, ${activeTabCenter - curveWidth / 3} ${height / 1.5}, ${activeTabCenter} ${height / 1.5}
+            C ${activeTabCenter + curveWidth / 3} ${height / 1.5}, ${activeTabCenter + curveWidth / 2} 0, ${activeTabCenter + curveWidth} 0
+            L ${width} 0
+            L ${width} ${height}
+            Z
+          `}
+          fill={isDarkMode ? '#151718' : '#FFFFFF'}
+        />
+      </Svg>
+    </View>
+  );
+};
 
-const TabsLayout = () => {
+export default function ProtectedLayout() {
+  const { checkAuth, isAuthenticated } = useAuth();
+  const { isDarkMode } = useTheme();
   const pathname = usePathname();
+  
+  // Get active tab index based on pathname
+  const getActiveIndex = () => {
+    switch (pathname) {
+      case '/Home':
+        return 0;
+      case '/Investments':
+        return 1;
+      case '/Discover':
+        return 2;
+      case '/Account':
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  useEffect(() => {
+    // Check authentication status on mount
+    checkAuth();
+  }, [checkAuth]);
+
+  // If not authenticated, redirect to auth index
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/login" />;
+  }
 
   return (
     <Tabs screenOptions={{
       headerShown: false,
       tabBarStyle: {
-        borderTopLeftRadius: 15,
+        height: 75,
+        backgroundColor: isDarkMode ? '#151718' : '#FFFFFF',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        elevation: 0,
+        borderTopWidth: 0,
         borderTopRightRadius: 15,
-        height: '10%',
-        paddingTop:5,
+        borderTopLeftRadius: 15,
       },
+      tabBarBackground: () => <TabBarBackground activeIndex={getActiveIndex()} />,
+      tabBarButton: (props) => (
+        <Pressable
+          {...props}
+          android_ripple={null}
+          style={[
+            props.style,
+            { backgroundColor: 'transparent' }
+          ]}
+        />
+      )
     }}>
       <Tabs.Screen
         name="Home"
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => (
-            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
-              {focused ? <HomeWhiteIcon width={20} height={20} /> : <HomeIcon width={20} height={20} />}
-            </View>),
+            <View style={{
+              padding: focused ? 8 : 0,
+              backgroundColor: focused ? (isDarkMode ? '#151718' : '#FFFFFF') : 'transparent',
+              borderRadius: 50,
+              transform: [{ translateY: focused ? -8 : 0 }],
+            }}>
+              <View style={{ 
+                backgroundColor: focused ? '#04B888' : 'transparent', 
+                borderRadius: 50, 
+                padding: focused ? 12 : 0,
+              }}>
+                {focused ? <HomeWhiteIcon width={24} height={24} /> : <HomeIcon width={24} height={24} />}
+              </View>
+            </View>
+          ),
           tabBarLabelStyle: {
-            color: pathname === '/Home' ? 'green' : 'gray',
+            color: pathname === '/Home' ? '#04B888' : (isDarkMode ? '#9BA1A6' : '#9CA4AB'),
             fontSize: 12,
-            marginTop:10,
+            marginTop: 10,
+            fontWeight: '500'
           }
         }}
       />
@@ -44,13 +148,26 @@ const TabsLayout = () => {
         options={{
           title: 'Investments',
           tabBarIcon: ({ focused }) => (
-            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10, }}>
-              {focused ? <BriefCaseWhiteIcon width={20} height={20} /> : <BriefCaseIcon width={20} height={20} />}
-            </View>),
+            <View style={{
+              padding: focused ? 8 : 0,
+              backgroundColor: focused ? (isDarkMode ? '#151718' : '#FFFFFF') : 'transparent',
+              borderRadius: 50,
+              transform: [{ translateY: focused ? -8 : 0 }],
+            }}>
+              <View style={{ 
+                backgroundColor: focused ? '#04B888' : 'transparent', 
+                borderRadius: 50, 
+                padding: focused ? 12 : 0,
+              }}>
+                {focused ? <BriefCaseWhiteIcon width={24} height={24} /> : <BriefCaseIcon width={24} height={24} />}
+              </View>
+            </View>
+          ),
           tabBarLabelStyle: {
-            color: pathname === '/Investments' ? 'green' : 'gray',
+            color: pathname === '/Investments' ? '#04B888' : (isDarkMode ? '#9BA1A6' : '#9CA4AB'),
             fontSize: 12,
-            marginTop:10,
+            marginTop: 10,
+            fontWeight: '500'
           }
         }}
       />
@@ -59,13 +176,26 @@ const TabsLayout = () => {
         options={{
           title: 'Discover',
           tabBarIcon: ({ focused }) => (
-            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
-              {focused ? <SearchWhiteIcon width={20} height={20} /> : <SeachIcon width={20} height={20} />}
-            </View>),
+            <View style={{
+              padding: focused ? 8 : 0,
+              backgroundColor: focused ? (isDarkMode ? '#151718' : '#FFFFFF') : 'transparent',
+              borderRadius: 50,
+              transform: [{ translateY: focused ? -8 : 0 }],
+            }}>
+              <View style={{ 
+                backgroundColor: focused ? '#04B888' : 'transparent', 
+                borderRadius: 50, 
+                padding: focused ? 12 : 0,
+              }}>
+                {focused ? <SearchWhiteIcon width={24} height={24} /> : <SeachIcon width={24} height={24} />}
+              </View>
+            </View>
+          ),
           tabBarLabelStyle: {
-            color: pathname === '/Discover' ? 'green' : 'gray',
+            color: pathname === '/Discover' ? '#04B888' : (isDarkMode ? '#9BA1A6' : '#9CA4AB'),
             fontSize: 12,
-            marginTop:10,
+            marginTop: 10,
+            fontWeight: '500'
           }
         }}
       />
@@ -74,18 +204,29 @@ const TabsLayout = () => {
         options={{
           title: 'Account',
           tabBarIcon: ({ focused }) => (
-            <View style={{ backgroundColor: focused ? '#04B888' : '#FFFFFF', borderRadius: 50, padding: 10 }}>
-              {focused ? <UserWhiteIcon width={20} height={20} /> : <ProfileIcon width={20} height={20} />}
-            </View>),
+            <View style={{
+              padding: focused ? 8 : 0,
+              backgroundColor: focused ? (isDarkMode ? '#151718' : '#FFFFFF') : 'transparent',
+              borderRadius: 50,
+              transform: [{ translateY: focused ? -8 : 0 }],
+            }}>
+              <View style={{ 
+                backgroundColor: focused ? '#04B888' : 'transparent', 
+                borderRadius: 50, 
+                padding: focused ? 12 : 0,
+              }}>
+                {focused ? <UserWhiteIcon width={24} height={24} /> : <ProfileIcon width={24} height={24} />}
+              </View>
+            </View>
+          ),
           tabBarLabelStyle: {
-            color: pathname === '/Account' ? 'green' : 'gray',
+            color: pathname === '/Account' ? '#04B888' : (isDarkMode ? '#9BA1A6' : '#9CA4AB'),
             fontSize: 12,
-            marginTop:10,
+            marginTop: 10,
+            fontWeight: '500'
           }
         }}
       />
     </Tabs>
   );
-};
-
-export default TabsLayout;
+}
