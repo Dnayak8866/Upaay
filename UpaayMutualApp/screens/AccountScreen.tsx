@@ -3,7 +3,8 @@ import { View, Text, Image, TouchableOpacity, Switch, ScrollView, SafeAreaView }
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import ArrowLeftIcon from '../assets/icons/arrow-left-normal.svg'
 import UserIcon from '../assets/icons/user-color.svg';
 import InfoIcon from '../assets/icons/info-circle.svg';
@@ -13,6 +14,7 @@ import CopyIcon from '../assets/icons/copy.svg';
 const AccountScreen = () => {
   const { logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
@@ -24,6 +26,7 @@ const AccountScreen = () => {
 
   return (
     <SafeAreaView style={{flex:1}}>
+      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
       <ScrollView className={`flex-1 ${isDarkMode ? 'bg-[#151718]' : 'bg-[#DFEDF1]'}`}>
         <View className="flex-row items-center mb-4 mt-6 p-4 relative">
           <TouchableOpacity

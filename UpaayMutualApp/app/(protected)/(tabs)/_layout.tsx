@@ -4,14 +4,14 @@ import { Pressable, View, Dimensions } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useEffect } from 'react';
-import BriefCaseIcon from '../../assets/icons/brifecase-tick.svg';
-import ProfileIcon from '../../assets/icons/user.svg';
-import SeachIcon from '../../assets/icons/search-normal.svg';
-import HomeIcon from '../../assets/icons/home.svg';
-import HomeWhiteIcon from '../../assets/icons/Vector.svg';
-import BriefCaseWhiteIcon from '../../assets/icons/white-briefcase.svg';
-import SearchWhiteIcon from '../../assets/icons/search-normal-white.svg';
-import UserWhiteIcon from '../../assets/icons/user-white.svg';
+import BriefCaseIcon from '@/assets/icons/brifecase-tick.svg';
+import ProfileIcon from '@/assets/icons/user.svg';
+import SeachIcon from '@/assets/icons/search-normal.svg';
+import HomeIcon from '@/assets/icons/home.svg';
+import HomeWhiteIcon from '@/assets/icons/Vector.svg';
+import BriefCaseWhiteIcon from '@/assets/icons/white-briefcase.svg';
+import SearchWhiteIcon from '@/assets/icons/search-normal-white.svg';
+import UserWhiteIcon from '@/assets/icons/user-white.svg';
 import Svg, { Path } from 'react-native-svg';
 
 const TabBarBackground = ({ activeIndex = 0 }) => {
@@ -62,7 +62,6 @@ export default function ProtectedLayout() {
   const { isDarkMode } = useTheme();
   const pathname = usePathname();
   
-  // Get active tab index based on pathname
   const getActiveIndex = () => {
     switch (pathname) {
       case '/Home':
@@ -79,11 +78,9 @@ export default function ProtectedLayout() {
   };
 
   useEffect(() => {
-    // Check authentication status on mount
     checkAuth();
   }, [checkAuth]);
 
-  // If not authenticated, redirect to auth index
   if (!isAuthenticated) {
     return <Redirect href="/(auth)/login" />;
   }

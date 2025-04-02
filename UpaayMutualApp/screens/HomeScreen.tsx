@@ -86,7 +86,7 @@ const HomeScreen = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" className="flex-row space-x-4">
                 {[1, 2, 3].map((item) => (
                     <TouchableOpacity key={item} className={`${isDarkMode ? 'bg-[#1F2123]' : 'bg-white'} p-4 rounded-3xl shadow-sm w-60 mr-2`}>
-                        <View className="w-10 h-10 p-7 bg-green-50 rounded-full flex items-center justify-center mb-2">
+                        <View className={`w-10 h-10 p-7 ${isDarkMode ? 'bg-[#3A3D3E]' : 'bg-green-50'} rounded-full flex items-center justify-center mb-2`}>
                             <StatusIcon />
                         </View>
                         <Text className="text-primary font-bold font-poppins text-xl">Nippon India{"\n"}Dynamic Bond Fund</Text>

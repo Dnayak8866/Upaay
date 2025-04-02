@@ -35,7 +35,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 ['refreshToken', dummyRefreshToken],
             ]);
             setIsAuthenticated(true);
-            // Using the correct path type for tab navigation
             router.replace('/(protected)/Home' as any);
         } catch (error) {
             console.error('Error storing auth tokens:', error);
