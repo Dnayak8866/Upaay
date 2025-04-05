@@ -90,13 +90,13 @@ const AccountScreen = () => {
 
           <TouchableOpacity
             onPress={handleSignOut}
-            className="mt-4 bg-red-500 p-4 rounded-2xl"
+            className={`mt-4 ${isDarkMode ? '': ''} p-4 rounded-xl border border-[#A9ABAD]`}
           >
-            <Text className="text-white text-center font-semibold text-base">Sign Out</Text>
+            <Text className={`${isDarkMode ? 'text-white': 'text-black'} text-center font-semibold text-lg`}>Sign Out</Text>
           </TouchableOpacity>
 
           <View className="mt-6">
-            <Text className="text-[#000000] mb-2 font-semibold font-poppins">Refer your friend</Text>
+            <Text className={`${isDarkMode ? 'text-[#ffffff]' : 'text-[#000000]'} mb-2 font-semibold font-poppins text-base`}>Refer your friend</Text>
             <View className="bg-[#E6F8F4] rounded-2xl p-4 flex-row items-center justify-between border-2 border-dotted border-[#04B888]">
               <Text className="text-[#04B888] ml-2">nix-pay/awesomeyou-xyz</Text>
               <TouchableOpacity className='bg-white rounded-lg p-2'>
